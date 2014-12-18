@@ -10,7 +10,7 @@ diff -up multicoreware-x265-d6257335c537/source/CMakeLists.txt.pic multicoreware
      endif()
      if(ARM)
 -        add_definitions(-march=armv6 -mfloat-abi=hard -mfpu=vfp)
-+        add_definitions(-march=armv6 -mfloat-abi=hard -mfpu=vfp -fPIC)
++        add_definitions(-fPIC)
      endif()
      check_cxx_compiler_flag(-Wno-narrowing CC_HAS_NO_NARROWING) 
      check_cxx_compiler_flag(-ffast-math CC_HAS_FAST_MATH) 

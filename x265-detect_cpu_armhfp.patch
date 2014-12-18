@@ -1,0 +1,18 @@
+diff -up multicoreware-x265-d6257335c537/source/CMakeLists.txt.armhfp multicoreware-x265-d6257335c537/source/CMakeLists.txt
+--- multicoreware-x265-d6257335c537/source/CMakeLists.txt.armhfp	2014-09-28 11:09:31.472787489 -0400
++++ multicoreware-x265-d6257335c537/source/CMakeLists.txt	2014-09-28 11:14:12.970136458 -0400
+@@ -45,9 +45,13 @@ if("${SYSPROC}" STREQUAL "" OR X86MATCH
+         add_definitions(-DX86_64=1)
+     endif()
+ elseif(${SYSPROC} STREQUAL "armv6l")
+-    message(STATUS "Detected ARM system processor")
++    message(STATUS "Detected ARMv6 system processor")
+     set(ARM 1)
+     add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1)
++elseif(${SYSPROC} STREQUAL "armv7l")
++    message(STATUS "Detected ARMv7 system processor")
++    set(ARM 1)
++    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV7=1)
+ else()
+     message(STATUS "CMAKE_SYSTEM_PROCESSOR value `${CMAKE_SYSTEM_PROCESSOR}` is unknown")
+     message(STATUS "Please add this value near ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}")

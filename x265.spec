@@ -3,7 +3,7 @@
 Summary: H.265/HEVC encoder
 Name: x265
 Version: 1.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 URL: http://x265.org/
 Source0: https://bitbucket.org/multicoreware/x265/get/%{version}.tar.bz2
 # fix pkgconfig file installation path
@@ -14,6 +14,7 @@ Patch1: x265-test-shared.patch
 Patch2: x265-pic.patch
 # don't create bogus soname (https://bitbucket.org/multicoreware/x265/issue/62/linux-incorrect-symbolic-links-to-shared)
 Patch3: x265-fix-soname.patch
+Patch4: x265-detect_cpu_armhfp.patch
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
@@ -58,6 +59,7 @@ This package contains the shared library development files.
 %endif
 %patch2 -p1 -b .pic
 %patch3 -p1 -b .soname
+%patch4 -p1 -b .armhfp
 f=doc/uncrustify/drag-uncrustify.bat
 tr -d '\r' < ${f} > ${f}.unix && \
 touch -r ${f} ${f}.unix && \
@@ -75,9 +77,11 @@ make DESTDIR=%{buildroot} install
 rm %{buildroot}%{_libdir}/libx265.a
 install -Dpm644 COPYING %{buildroot}%{_pkgdocdir}/COPYING
 
+%ifnarch %{arm}
 %check
 LD_LIBRARY_PATH=$(pwd) test/PoolTest
 LD_LIBRARY_PATH=$(pwd) test/TestBench
+%endif
 
 %post libs -p /sbin/ldconfig
 
@@ -99,6 +103,10 @@ LD_LIBRARY_PATH=$(pwd) test/TestBench
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Dec 18 2014 Dominik Mierzejewski <rpm@greysector.net> 1.2-6
+- fix build on armv7l arch (partially fix rfbz#3361, patch by Nicolas Chauvet)
+- don't run tests on ARM for now (rfbz#3361)
+
 * Sun Aug 17 2014 Dominik Mierzejewski <rpm@greysector.net> 1.2-5
 - don't include contributor agreement in doc
 - make sure /usr/share/doc/x265 is owned
