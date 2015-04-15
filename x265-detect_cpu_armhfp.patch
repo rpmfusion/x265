@@ -1,12 +1,12 @@
-diff -up multicoreware-x265-d6257335c537/source/CMakeLists.txt.armhfp multicoreware-x265-d6257335c537/source/CMakeLists.txt
---- multicoreware-x265-d6257335c537/source/CMakeLists.txt.armhfp	2014-09-28 11:09:31.472787489 -0400
-+++ multicoreware-x265-d6257335c537/source/CMakeLists.txt	2014-09-28 11:14:12.970136458 -0400
-@@ -45,9 +45,13 @@ if("${SYSPROC}" STREQUAL "" OR X86MATCH
+diff -up x265_1.6/source/CMakeLists.txt.armhfp x265_1.6/source/CMakeLists.txt
+--- x265_1.6/source/CMakeLists.txt.armhfp	2015-04-15 13:26:46.995287699 +0200
++++ x265_1.6/source/CMakeLists.txt	2015-04-15 13:27:29.015472793 +0200
+@@ -51,9 +51,13 @@ if("${SYSPROC}" STREQUAL "" OR X86MATCH
          add_definitions(-DX86_64=1)
      endif()
  elseif(${SYSPROC} STREQUAL "armv6l")
--    message(STATUS "Detected ARM system processor")
-+    message(STATUS "Detected ARMv6 system processor")
+-    message(STATUS "Detected ARM target processor")
++    message(STATUS "Detected ARMv6 target processor")
      set(ARM 1)
      add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1)
 +elseif(${SYSPROC} STREQUAL "armv7l")
