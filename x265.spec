@@ -1,6 +1,6 @@
 Summary: H.265/HEVC encoder
 Name: x265
-Version: 1.6
+Version: 1.8
 Release: 1%{?dist}
 URL: http://x265.org/
 Source0: http://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
@@ -85,6 +85,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sat Oct 24 2015 Nicolas Chauvet <kwizart@gmail.com> - 1.8-1
+- Update to 1.8
+
 * Wed Apr 15 2015 Dominik Mierzejewski <rpm@greysector.net> 1.6-1
 - update to 1.6 (ABI bump, rfbz#3593)
 - release tarballs are now hosted on videolan.org

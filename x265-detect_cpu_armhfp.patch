@@ -1,9 +1,9 @@
-diff -up x265_1.6/source/CMakeLists.txt.armhfp x265_1.6/source/CMakeLists.txt
---- x265_1.6/source/CMakeLists.txt.armhfp	2015-04-15 13:26:46.995287699 +0200
-+++ x265_1.6/source/CMakeLists.txt	2015-04-15 13:27:29.015472793 +0200
-@@ -51,9 +51,13 @@ if("${SYSPROC}" STREQUAL "" OR X86MATCH
-         add_definitions(-DX86_64=1)
-     endif()
+diff -up x265_1.8/source/CMakeLists.txt.armhfp x265_1.8/source/CMakeLists.txt
+--- x265_1.8/source/CMakeLists.txt.armhfp	2015-09-22 10:10:07.000000000 +0200
++++ x265_1.8/source/CMakeLists.txt	2015-10-24 12:17:17.675572785 +0200
+@@ -57,9 +57,13 @@ elseif(POWERMATCH GREATER "-1")
+     set(POWER 1)
+     add_definitions(-DX265_ARCH_POWER=1)
  elseif(${SYSPROC} STREQUAL "armv6l")
 -    message(STATUS "Detected ARM target processor")
 +    message(STATUS "Detected ARMv6 target processor")
