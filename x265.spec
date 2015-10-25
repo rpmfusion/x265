@@ -6,6 +6,8 @@ URL: http://x265.org/
 Source0: http://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
 # link test binaries with shared library
 Patch1: x265-test-shared.patch
+# fix building as PIC
+Patch2: x265-pic.patch
 Patch4: x265-detect_cpu_armhfp.patch
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -45,11 +47,13 @@ This package contains the shared library development files.
 %prep
 %setup -q -n x265_%{version}
 %patch1 -p1 -b .ts
+%patch2 -p1 -b .pic
 %patch4 -p1 -b .armhfp
 
 %build
 %cmake -G "Unix Makefiles" \
  -DCMAKE_SKIP_RPATH:BOOL=YES \
+ -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
  -DENABLE_PIC:BOOL=ON \
  -DENABLE_TESTS:BOOL=ON \
  source
@@ -73,7 +77,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %files libs
 %dir %{_pkgdocdir}
 %{_pkgdocdir}/COPYING
-%{_libdir}/libx265.so.51
+%{_libdir}/libx265.so.68
 
 %files devel
 %doc doc/*
@@ -83,6 +87,10 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sun Oct 25 2015 Dominik Mierzejewski <rpm@greysector.net> 1.8-2
+- fix building as PIC
+- update SO version in file list
+
 * Sat Oct 24 2015 Nicolas Chauvet <kwizart@gmail.com> - 1.8-1
 - Update to 1.8
 - Avoid tests for now
