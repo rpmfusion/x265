@@ -1,6 +1,6 @@
 Summary: H.265/HEVC encoder
 Name: x265
-Version: 1.8
+Version: 1.9
 Release: 1%{?dist}
 URL: http://x265.org/
 Source0: http://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
@@ -77,7 +77,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %files libs
 %dir %{_pkgdocdir}
 %{_pkgdocdir}/COPYING
-%{_libdir}/libx265.so.68
+%{_libdir}/libx265.so.79
 
 %files devel
 %doc doc/*
@@ -87,6 +87,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Fri Apr 08 2016 Adrian Reber <adrian@lisas.de> - 1.9-1
+- Update to 1.9
+
 * Sun Oct 25 2015 Dominik Mierzejewski <rpm@greysector.net> 1.8-2
 - fix building as PIC
 - update SO version in file list

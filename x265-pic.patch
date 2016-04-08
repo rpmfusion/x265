@@ -2,8 +2,8 @@ diff -up x265_1.8/source/CMakeLists.txt.pic x265_1.8/source/CMakeLists.txt
 --- x265_1.8/source/CMakeLists.txt.pic	2015-09-22 10:10:07.000000000 +0200
 +++ x265_1.8/source/CMakeLists.txt	2015-10-25 22:43:12.666153586 +0100
 @@ -158,7 +162,7 @@ if(GCC)
-     add_definitions(-Wall -Wextra -Wshadow)
      add_definitions(-D__STDC_LIMIT_MACROS=1)
+     add_definitions(-std=gnu++98)
      if(ENABLE_PIC)
 -         add_definitions(-fPIC)
 +         add_definitions(-fPIC -DPIC)
