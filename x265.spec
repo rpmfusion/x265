@@ -3,7 +3,7 @@ Name: x265
 Version: 1.9
 Release: 1%{?dist}
 URL: http://x265.org/
-Source0: http://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
+Source0: https://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
 # link test binaries with shared library
 Patch1: x265-test-shared.patch
 # fix building as PIC
