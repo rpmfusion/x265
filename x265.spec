@@ -1,7 +1,7 @@
 Summary: H.265/HEVC encoder
 Name: x265
 Version: 1.9
-Release: 1%{?dist}
+Release: 2%{?dist}
 URL: http://x265.org/
 Source0: https://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
 # link test binaries with shared library
@@ -14,6 +14,9 @@ Patch4: x265-detect_cpu_armhfp.patch
 # everything else - GPLv2+
 License: GPLv2+ and BSD
 BuildRequires: cmake
+%ifnarch armv7hl armv7hnl s390 s390x
+BuildRequires: numactl-devel
+%endif
 BuildRequires: yasm
 
 %description
@@ -87,6 +90,11 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Tue Jul 19 2016 Dominik Mierzejewski <rpm@greysector.net> - 1.9-2
+- use https for source URL
+- enable NUMA support
+- make sure Fedora compiler flags are used on ARM
+
 * Fri Apr 08 2016 Adrian Reber <adrian@lisas.de> - 1.9-1
 - Update to 1.9
 
