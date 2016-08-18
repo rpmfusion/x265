@@ -1,9 +1,9 @@
 Summary: H.265/HEVC encoder
 Name: x265
 Version: 1.9
-Release: 2%{?dist}
+Release: 3%{?dist}
 URL: http://x265.org/
-Source0: https://ftp.videolan.org/pub/videolan/x265/x265_%{version}.tar.gz
+Source0: https://ftp.videolan.org/pub/videolan/x265/%{name}_%{version}.tar.gz
 # link test binaries with shared library
 Patch1: x265-test-shared.patch
 # fix building as PIC
@@ -48,10 +48,7 @@ highest performance on a wide variety of hardware platforms.
 This package contains the shared library development files.
 
 %prep
-%setup -q -n x265_%{version}
-%patch1 -p1 -b .ts
-%patch2 -p1 -b .pic
-%patch4 -p1 -b .armhfp
+%autosetup -p1 -n %{name}_%{version}
 
 %build
 %cmake -G "Unix Makefiles" \
@@ -60,12 +57,11 @@ This package contains the shared library development files.
  -DENABLE_PIC:BOOL=ON \
  -DENABLE_TESTS:BOOL=ON \
  source
-make %{?_smp_mflags}
+%make_build
 
 %install
-make DESTDIR=%{buildroot} install
+%make_install
 rm %{buildroot}%{_libdir}/libx265.a
-install -Dpm644 COPYING %{buildroot}%{_pkgdocdir}/COPYING
 
 %check
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
@@ -78,8 +74,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_bindir}/x265
 
 %files libs
-%dir %{_pkgdocdir}
-%{_pkgdocdir}/COPYING
+%license COPYING
 %{_libdir}/libx265.so.79
 
 %files devel
@@ -90,6 +85,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Aug 18 2016 Sérgio Basto <sergio@serjux.com> - 1.9-3
+- Clean spec, Vascom patches series, rfbz #4199, add license tag
+
 * Tue Jul 19 2016 Dominik Mierzejewski <rpm@greysector.net> - 1.9-2
 - use https for source URL
 - enable NUMA support
