@@ -1,0 +1,17 @@
+diff -up x265_1.9/source/CMakeLists.txt.armhfp x265_1.9/source/CMakeLists.txt
+--- x265_1.9/source/CMakeLists.txt.armhfp	2016-07-19 03:10:51.163733946 +0200
++++ x265_1.9/source/CMakeLists.txt	2016-07-19 03:13:15.638665651 +0200
+@@ -59,9 +59,12 @@ elseif(POWERMATCH GREATER "-1")
+     set(POWER 1)
+     add_definitions(-DX265_ARCH_POWER=1)
+ elseif(${SYSPROC} STREQUAL "armv6l")
+-    message(STATUS "Detected ARM target processor")
++    message(STATUS "Detected ARMv6 target processor")
+     set(ARM 1)
+     add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1)
++elseif(${SYSPROC} STREQUAL "armv7l")
++    message(STATUS "Detected ARMv7 system processor")
++    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV7=1)
+ else()
+     message(STATUS "CMAKE_SYSTEM_PROCESSOR value `${CMAKE_SYSTEM_PROCESSOR}` is unknown")
+     message(STATUS "Please add this value near ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}")

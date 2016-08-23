@@ -1,16 +1,24 @@
-diff -up multicoreware-x265-d6257335c537/source/CMakeLists.txt.pic multicoreware-x265-d6257335c537/source/CMakeLists.txt
---- multicoreware-x265-d6257335c537/source/CMakeLists.txt.pic	2014-07-17 09:37:41.176441279 +0200
-+++ multicoreware-x265-d6257335c537/source/CMakeLists.txt	2014-07-17 10:18:03.001014597 +0200
-@@ -122,10 +122,10 @@ if(GCC)
-         add_definitions(-fPIC)
-     endif(X64 AND NOT WIN32)
-     if(X86 AND NOT X64)
--        add_definitions(-march=i686)
-+        add_definitions(-march=i686 -fPIC)
-     endif()
-     if(ARM)
--        add_definitions(-march=armv6 -mfloat-abi=hard -mfpu=vfp)
-+        add_definitions(-march=armv6 -mfloat-abi=hard -mfpu=vfp -fPIC)
-     endif()
-     check_cxx_compiler_flag(-Wno-narrowing CC_HAS_NO_NARROWING) 
-     check_cxx_compiler_flag(-ffast-math CC_HAS_FAST_MATH) 
+diff -up x265_1.8/source/CMakeLists.txt.pic x265_1.8/source/CMakeLists.txt
+--- x265_1.8/source/CMakeLists.txt.pic	2015-09-22 10:10:07.000000000 +0200
++++ x265_1.8/source/CMakeLists.txt	2015-10-25 22:43:12.666153586 +0100
+@@ -158,7 +162,7 @@ if(GCC)
+     add_definitions(-D__STDC_LIMIT_MACROS=1)
+     add_definitions(-std=gnu++98)
+     if(ENABLE_PIC)
+-         add_definitions(-fPIC)
++         add_definitions(-fPIC -DPIC)
+     endif(ENABLE_PIC)
+     if(NATIVE_BUILD)
+         if(INTEL_CXX)
+diff -up x265_1.8/source/test/checkasm-a.asm.pic x265_1.8/source/test/checkasm-a.asm
+--- x265_1.8/source/test/checkasm-a.asm.pic	2015-09-22 10:10:07.000000000 +0200
++++ x265_1.8/source/test/checkasm-a.asm	2015-10-25 23:23:45.041877640 +0100
+@@ -154,7 +154,7 @@ cglobal checkasm_call, 2,15,16,max_args*
+     mov  r9, rax
+     mov r10, rdx
+     lea  r0, [error_message]
+-    call puts
++    call puts wrt ..plt
+     mov  r1, [rsp+max_args*8]
+     mov  dword [r1], 0
+     mov  rdx, r10

@@ -1,24 +1,22 @@
-%global commit d6257335c537
-
 Summary: H.265/HEVC encoder
 Name: x265
-Version: 1.2
-Release: 5%{?dist}
+Version: 1.9
+Release: 3%{?dist}
 URL: http://x265.org/
-Source0: https://bitbucket.org/multicoreware/x265/get/%{version}.tar.bz2
-# fix pkgconfig file installation path
-Patch0: x265-pc-path.patch
+Source0: https://ftp.videolan.org/pub/videolan/x265/%{name}_%{version}.tar.gz
 # link test binaries with shared library
 Patch1: x265-test-shared.patch
-# build with -fPIC on arm and i686, too
+# fix building as PIC
 Patch2: x265-pic.patch
-# don't create bogus soname (https://bitbucket.org/multicoreware/x265/issue/62/linux-incorrect-symbolic-links-to-shared)
-Patch3: x265-fix-soname.patch
+Patch4: x265-detect_cpu_armhfp.patch
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
 License: GPLv2+ and BSD
 BuildRequires: cmake
+%ifnarch armv7hl armv7hnl s390 s390x
+BuildRequires: numactl-devel
+%endif
 BuildRequires: yasm
 
 %description
@@ -50,34 +48,23 @@ highest performance on a wide variety of hardware platforms.
 This package contains the shared library development files.
 
 %prep
-%setup -q -n multicoreware-%{name}-%{commit}
-%patch0 -p1 -b .p
-# tests are crashing on x86 if linked against shared libx265
-%ifnarch i686
-%patch1 -p1 -b .ts
-%endif
-%patch2 -p1 -b .pic
-%patch3 -p1 -b .soname
-f=doc/uncrustify/drag-uncrustify.bat
-tr -d '\r' < ${f} > ${f}.unix && \
-touch -r ${f} ${f}.unix && \
-mv ${f}.unix ${f}
+%autosetup -p1 -n %{name}_%{version}
 
 %build
 %cmake -G "Unix Makefiles" \
  -DCMAKE_SKIP_RPATH:BOOL=YES \
+ -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+ -DENABLE_PIC:BOOL=ON \
  -DENABLE_TESTS:BOOL=ON \
  source
-make %{?_smp_mflags}
+%make_build
 
 %install
-make DESTDIR=%{buildroot} install
+%make_install
 rm %{buildroot}%{_libdir}/libx265.a
-install -Dpm644 COPYING %{buildroot}%{_pkgdocdir}/COPYING
 
 %check
-LD_LIBRARY_PATH=$(pwd) test/PoolTest
-LD_LIBRARY_PATH=$(pwd) test/TestBench
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 
 %post libs -p /sbin/ldconfig
 
@@ -87,9 +74,8 @@ LD_LIBRARY_PATH=$(pwd) test/TestBench
 %{_bindir}/x265
 
 %files libs
-%dir %{_pkgdocdir}
-%{_pkgdocdir}/COPYING
-%{_libdir}/libx265.so.25
+%license COPYING
+%{_libdir}/libx265.so.79
 
 %files devel
 %doc doc/*
@@ -99,6 +85,34 @@ LD_LIBRARY_PATH=$(pwd) test/TestBench
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Aug 18 2016 Sérgio Basto <sergio@serjux.com> - 1.9-3
+- Clean spec, Vascom patches series, rfbz #4199, add license tag
+
+* Tue Jul 19 2016 Dominik Mierzejewski <rpm@greysector.net> - 1.9-2
+- use https for source URL
+- enable NUMA support
+- make sure Fedora compiler flags are used on ARM
+
+* Fri Apr 08 2016 Adrian Reber <adrian@lisas.de> - 1.9-1
+- Update to 1.9
+
+* Sun Oct 25 2015 Dominik Mierzejewski <rpm@greysector.net> 1.8-2
+- fix building as PIC
+- update SO version in file list
+
+* Sat Oct 24 2015 Nicolas Chauvet <kwizart@gmail.com> - 1.8-1
+- Update to 1.8
+- Avoid tests for now
+
+* Wed Apr 15 2015 Dominik Mierzejewski <rpm@greysector.net> 1.6-1
+- update to 1.6 (ABI bump, rfbz#3593)
+- release tarballs are now hosted on videolan.org
+- drop obsolete patches
+
+* Thu Dec 18 2014 Dominik Mierzejewski <rpm@greysector.net> 1.2-6
+- fix build on armv7l arch (partially fix rfbz#3361, patch by Nicolas Chauvet)
+- don't run tests on ARM for now (rfbz#3361)
+
 * Sun Aug 17 2014 Dominik Mierzejewski <rpm@greysector.net> 1.2-5
 - don't include contributor agreement in doc
 - make sure /usr/share/doc/x265 is owned
