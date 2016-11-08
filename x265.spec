@@ -1,7 +1,7 @@
 Summary: H.265/HEVC encoder
 Name: x265
-Version: 1.9
-Release: 3%{?dist}
+Version: 2.1
+Release: 1%{?dist}
 URL: http://x265.org/
 Source0: https://ftp.videolan.org/pub/videolan/x265/%{name}_%{version}.tar.gz
 # link test binaries with shared library
@@ -75,7 +75,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 
 %files libs
 %license COPYING
-%{_libdir}/libx265.so.79
+%{_libdir}/libx265.so.*
 
 %files devel
 %doc doc/*
@@ -85,6 +85,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Mon Nov 07 2016 Sérgio Basto <sergio@serjux.com> - 2.1-1
+- Update to 2.1
+
 * Thu Aug 18 2016 Sérgio Basto <sergio@serjux.com> - 1.9-3
 - Clean spec, Vascom patches series, rfbz #4199, add license tag
 
