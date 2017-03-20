@@ -1,7 +1,7 @@
 Summary: H.265/HEVC encoder
 Name: x265
 Version: 2.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 URL: http://x265.org/
 Source0: https://ftp.videolan.org/pub/videolan/x265/%{name}_%{version}.tar.gz
 # link test binaries with shared library
@@ -85,6 +85,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Mon Mar 20 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 2.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Tue Jan 03 2017 Dominik Mierzejewski <rpm@greysector.net> - 2.2-1
 - update to 2.2
 - spell out SO version in file list
