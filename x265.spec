@@ -1,33 +1,38 @@
-Summary: H.265/HEVC encoder
-Name: x265
-Version: 1.9
-Release: 3%{?dist}
-URL: http://x265.org/
-Source0: https://ftp.videolan.org/pub/videolan/x265/%{name}_%{version}.tar.gz
-# link test binaries with shared library
-Patch1: x265-test-shared.patch
-# fix building as PIC
-Patch2: x265-pic.patch
-Patch4: x265-detect_cpu_armhfp.patch
+Summary:    H.265/HEVC encoder
+Name:       x265
+Version:    1.9
+Release:    4%{?dist}
+URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
-License: GPLv2+ and BSD
-BuildRequires: cmake
+License:    GPLv2+ and BSD
+
+Source0:    https://bitbucket.org/multicoreware/%{name}/downloads/%{name}_%{version}.tar.gz
+
+# link test binaries with shared library
+Patch1:     x265-test-shared.patch
+# fix building as PIC
+Patch2:     x265-pic.patch
+Patch3:     x265-high-bit-depth-soname.patch
+Patch4:     x265-detect_cpu_armhfp.patch
+
+BuildRequires:  cmake
+BuildRequires:  yasm
+
 %ifnarch armv7hl armv7hnl s390 s390x
-BuildRequires: numactl-devel
+BuildRequires:  numactl-devel
 %endif
-BuildRequires: yasm
 
 %description
 The primary objective of x265 is to become the best H.265/HEVC encoder
-available anywhere, offering the highest compression efficiency and the
-highest performance on a wide variety of hardware platforms.
+available anywhere, offering the highest compression efficiency and the highest
+performance on a wide variety of hardware platforms.
 
 This package contains the command line encoder.
 
 %package libs
-Summary: H.265/HEVC encoder library
+Summary:    H.265/HEVC encoder library
 
 %description libs
 The primary objective of x265 is to become the best H.265/HEVC encoder
@@ -37,13 +42,13 @@ highest performance on a wide variety of hardware platforms.
 This package contains the shared library.
 
 %package devel
-Summary: H.265/HEVC encoder library development files
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Summary:    H.265/HEVC encoder library development files
+Requires:   %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description devel
 The primary objective of x265 is to become the best H.265/HEVC encoder
-available anywhere, offering the highest compression efficiency and the
-highest performance on a wide variety of hardware platforms.
+available anywhere, offering the highest compression efficiency and the highest
+performance on a wide variety of hardware platforms.
 
 This package contains the shared library development files.
 
@@ -51,20 +56,62 @@ This package contains the shared library development files.
 %autosetup -p1 -n %{name}_%{version}
 
 %build
+# High depth libraries (from source/h265.h):
+#   If the requested bitDepth is not supported by the linked libx265,
+#   it will attempt to dynamically bind x265_api_get() from a shared
+#   library with an appropriate name:
+#     8bit:  libx265_main.so
+#     10bit: libx265_main10.so
+
+build() {
 %cmake -G "Unix Makefiles" \
- -DCMAKE_SKIP_RPATH:BOOL=YES \
- -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
- -DENABLE_PIC:BOOL=ON \
- -DENABLE_TESTS:BOOL=ON \
- source
+    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+    -DCMAKE_SKIP_RPATH:BOOL=YES \
+    -DENABLE_PIC:BOOL=ON \
+    -DENABLE_TESTS:BOOL=ON \
+    $* \
+    ../source
 %make_build
+}
+
+# High depth 10/12 bit libraries are supported only on 64 bit. They require
+# disabled AltiVec instructions for building on ppc64/ppc64le.
+%ifarch x86_64 aarch64 ppc64 ppc64le
+mkdir 10bit; pushd 10bit
+    build -DENABLE_CLI=OFF -DENABLE_ALTIVEC=OFF -DHIGH_BIT_DEPTH=ON
+popd
+
+mkdir 12bit; pushd 12bit
+    build -DENABLE_CLI=OFF -DENABLE_ALTIVEC=OFF -DHIGH_BIT_DEPTH=ON -DMAIN12=ON
+popd
+%endif
+
+# 8 bit base library + encoder
+mkdir 8bit; pushd 8bit
+    build
+popd
 
 %install
-%make_install
-rm %{buildroot}%{_libdir}/libx265.a
+for i in 8 10 12; do
+    if [ -d ${i}bit ]; then
+        pushd ${i}bit
+            %make_install
+            # Remove unversioned library, should not be linked to
+            rm -f %{buildroot}%{_libdir}/libx265_main${i}.so
+        popd
+    fi
+done
+
+find %{buildroot} -name "*.a" -delete
 
 %check
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
+for i in 8 10 12; do
+    if [ -d ${i}bit ]; then
+        pushd ${i}bit
+            LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
+        popd
+    fi
+done
 
 %post libs -p /sbin/ldconfig
 
@@ -76,6 +123,10 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %files libs
 %license COPYING
 %{_libdir}/libx265.so.79
+%ifarch x86_64 aarch64 ppc64 ppc64le
+%{_libdir}/libx265_main10.so.79
+%{_libdir}/libx265_main12.so.79
+%endif
 
 %files devel
 %doc doc/*
@@ -85,6 +136,11 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Mon Apr 10 2017 Simone Caronni <negativo17@gmail.com> - 1.9-4
+- Use source from multicoreware website.
+- Clean up SPEC file a bit (formatting, 80 char wide descriptions).
+- Enable shared 10/12 bit libraries on 64 bit architectures.
+
 * Thu Aug 18 2016 Sérgio Basto <sergio@serjux.com> - 1.9-3
 - Clean spec, Vascom patches series, rfbz #4199, add license tag
 
