@@ -1,7 +1,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    2.2
-Release:    3%{?dist}
+Version:    2.4
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -122,10 +122,10 @@ done
 
 %files libs
 %license COPYING
-%{_libdir}/libx265.so.102
+%{_libdir}/libx265.so.116
 %ifarch x86_64 aarch64 ppc64 ppc64le
-%{_libdir}/libx265_main10.so.102
-%{_libdir}/libx265_main12.so.102
+%{_libdir}/libx265_main10.so.116
+%{_libdir}/libx265_main12.so.116
 %endif
 
 %files devel
@@ -136,6 +136,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sat Apr 29 2017 Leigh Scott <leigh123linux@googlemail.com> - 2.4-1
+- update to 2.4
+
 * Mon Apr 10 2017 Simone Caronni <negativo17@gmail.com> - 2.2-3
 - Use source from multicoreware website.
 - Clean up SPEC file a bit (formatting, 80 char wide descriptions).
