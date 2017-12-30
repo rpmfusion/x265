@@ -1,4 +1,4 @@
-%global     _so_version 130
+%global     _so_version 146
 
 Summary:    H.265/HEVC encoder
 Name:       x265
