@@ -2,7 +2,7 @@
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    2.5
+Version:    2.6
 Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
@@ -138,6 +138,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sat Dec 30 2017 Sérgio Basto <sergio@serjux.com> - 2.6-1
+- Update x265 to 2.6
+
 * Mon Oct 16 2017 Leigh Scott <leigh123linux@googlemail.com> - 2.5-1
 - update to 2.5
 
