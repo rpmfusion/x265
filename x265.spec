@@ -1,8 +1,8 @@
-%global     _so_version 146
+%global     _so_version 151
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    2.6
+Version:    2.7
 Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
@@ -12,15 +12,14 @@ License:    GPLv2+ and BSD
 
 Source0:    https://bitbucket.org/multicoreware/%{name}/downloads/%{name}_%{version}.tar.gz
 
-# link test binaries with shared library
-Patch1:     x265-test-shared.patch
 # fix building as PIC
-Patch2:     x265-pic.patch
-Patch3:     x265-high-bit-depth-soname.patch
-Patch4:     x265-detect_cpu_armhfp.patch
+Patch0:     x265-pic.patch
+Patch1:     x265-high-bit-depth-soname.patch
+Patch2:     x265-detect_cpu_armhfp.patch
 
-BuildRequires:  cmake
-BuildRequires:  yasm
+BuildRequires:  cmake3
+BuildRequires:  nasm
+BuildRequires:  ninja-build
 
 %ifnarch armv7hl armv7hnl s390 s390x
 BuildRequires:  numactl-devel
@@ -55,7 +54,7 @@ performance on a wide variety of hardware platforms.
 This package contains the shared library development files.
 
 %prep
-%autosetup -p1 -n %{name}_v%{version}
+%autosetup -p1 -n %{name}_%{version}
 
 %build
 # High depth libraries (from source/h265.h):
@@ -66,14 +65,14 @@ This package contains the shared library development files.
 #     10bit: libx265_main10.so
 
 build() {
-%cmake -G "Unix Makefiles" \
+%cmake3 -G "Ninja" \
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
     -DENABLE_TESTS:BOOL=ON \
     $* \
     ../source
-%make_build
+%ninja_build
 }
 
 # High depth 10/12 bit libraries are supported only on 64 bit. They require
@@ -97,7 +96,7 @@ popd
 for i in 8 10 12; do
     if [ -d ${i}bit ]; then
         pushd ${i}bit
-            %make_install
+            %ninja_install
             # Remove unversioned library, should not be linked to
             rm -f %{buildroot}%{_libdir}/libx265_main${i}.so
         popd
@@ -110,14 +109,12 @@ find %{buildroot} -name "*.a" -delete
 for i in 8 10 12; do
     if [ -d ${i}bit ]; then
         pushd ${i}bit
-            LD_LIBRARY_PATH=%{buildroot}%{_libdir} test/TestBench || :
+            test/TestBench || :
         popd
     fi
 done
 
-%post libs -p /sbin/ldconfig
-
-%postun libs -p /sbin/ldconfig
+%ldconfig_scriptlets libs
 
 %files
 %{_bindir}/x265
@@ -138,6 +135,12 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Tue Feb 27 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.7-1
+- update to 2.7
+- Drop shared test patch as it causes nasm build to fail
+- Fix scriptlets
+- Use ninja to build
+
 * Sat Dec 30 2017 Sérgio Basto <sergio@serjux.com> - 2.6-1
 - Update x265 to 2.6
 
