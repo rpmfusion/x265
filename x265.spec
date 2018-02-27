@@ -3,7 +3,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    2.7
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -16,6 +16,7 @@ Source0:    https://bitbucket.org/multicoreware/%{name}/downloads/%{name}_%{vers
 Patch0:     x265-pic.patch
 Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-detect_cpu_armhfp.patch
+Patch3:     x265-arm-cflags.patch
 
 BuildRequires:  cmake3
 BuildRequires:  nasm
@@ -135,6 +136,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Tue Feb 27 2018 Nicolas Chauvet <kwizart@gmail.com> - 2.7-2
+- Fix CFLAGS on ARM
+
 * Tue Feb 27 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.7-1
 - update to 2.7
 - Drop shared test patch as it causes nasm build to fail
