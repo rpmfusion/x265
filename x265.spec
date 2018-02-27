@@ -69,6 +69,9 @@ build() {
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
+%ifarch armv7hnl
+    -DENABLE_ASSEMBLY=OFF \
+%endif
     -DENABLE_TESTS:BOOL=ON \
     $* \
     ../source
@@ -136,7 +139,7 @@ done
 
 %changelog
 * Tue Feb 27 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.7-1
-- update to 2.7
+- Update to 2.7
 - Drop shared test patch as it causes nasm build to fail
 - Fix scriptlets
 - Use ninja to build
