@@ -3,7 +3,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    2.7
-Release:    3%{?dist}
+Release:    4%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -137,6 +137,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Fri Jul 27 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.7-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Sun Apr 08 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.7-3
 - Fix pkgconfig file (rfbz #4853)
 
