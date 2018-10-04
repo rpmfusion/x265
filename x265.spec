@@ -1,9 +1,9 @@
-%global     _so_version 151
+%global     _so_version 160
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    2.7
-Release:    5%{?dist}
+Version:    2.8
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -18,7 +18,10 @@ Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-detect_cpu_armhfp.patch
 Patch3:     x265-arm-cflags.patch
 Patch4:     x265-pkgconfig_path_fix.patch
+Patch5:     x265-4504219210793536d921ee4e0b3058698c630bf4.diff
+Patch6:     x265-2.8-asm-primitives.patch
 
+BuildRequires:  gcc-c++
 BuildRequires:  cmake3
 BuildRequires:  nasm
 BuildRequires:  ninja-build
@@ -137,6 +140,11 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Oct 04 2018 Sérgio Basto <sergio@serjux.com> - 2.8-1
+- Update to 2.8 more 2 patches to fix builds on non-x86 and arm
+  https://bitbucket.org/multicoreware/x265/issues/404/28-fails-to-build-on-ppc64le-gnu-linux
+  https://bitbucket.org/multicoreware/x265/issues/406/arm-assembly-fail-to-compile-on-18
+
 * Sun Aug 19 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.7-5
 - Rebuilt for Fedora 29 Mass Rebuild binutils issue
 

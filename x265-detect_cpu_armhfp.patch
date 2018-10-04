@@ -50,7 +50,7 @@ diff -up x265_2.2/source/CMakeLists.txt.orig x265_2.2/source/CMakeLists.txt
  #include <x86intrin.h>
 -#elif ( !defined(__APPLE__) && defined (__GNUC__) && defined(__ARM_NEON__))
 -#include <arm_neon.h>
- #elif defined(__GNUC__)
+ #elif defined(__GNUC__) && (!defined(__clang__) || __clang_major__ < 4)
 +#if ( !defined(__APPLE__) && defined(__ARM_NEON__))
 +#include <arm_neon.h>
 +#endif
