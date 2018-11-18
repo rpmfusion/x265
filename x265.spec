@@ -19,6 +19,7 @@ Patch2:     x265-detect_cpu_armhfp.patch
 Patch3:     x265-arm-cflags.patch
 Patch4:     x265-pkgconfig_path_fix.patch
 Patch5:     x265-2.8-asm-primitives.patch
+Patch6:     https://sources.debian.org/data/main/x/x265/2.9-3/debian/patches/0003-detect512-is-needed-on-all-architectures.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake3
