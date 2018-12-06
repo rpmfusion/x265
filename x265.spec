@@ -3,7 +3,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    2.9
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -23,6 +23,7 @@ Patch6:     https://sources.debian.org/data/main/x/x265/2.9-3/debian/patches/000
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake3
+%{?el7:BuildRequires: epel-rpm-macros}
 BuildRequires:  nasm
 BuildRequires:  ninja-build
 
@@ -70,7 +71,7 @@ This package contains the shared library development files.
 #     10bit: libx265_main10.so
 
 build() {
-%cmake3 -G "Ninja" \
+%cmake3 -Wno-dev -G "Ninja" \
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
@@ -140,6 +141,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Wed Nov 21 2018 Antonio Trande <sagitter@fedoraproject.org> - 2.9-2
+- Rebuild for ffmpeg-3.* on el7
+
 * Sun Nov 18 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.9-1
 - Update to 2.9
 
