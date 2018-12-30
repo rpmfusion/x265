@@ -3,7 +3,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    2.9
-Release:    2%{?dist}
+Release:    3%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -141,6 +141,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sun Dec 30 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.9-3
+- Rebuild against newer nasm on el7 (rfbz #5128)
+
 * Wed Nov 21 2018 Antonio Trande <sagitter@fedoraproject.org> - 2.9-2
 - Rebuild for ffmpeg-3.* on el7
 
