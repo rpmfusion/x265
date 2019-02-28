@@ -1,9 +1,9 @@
-%global     _so_version 165
+%global     _so_version 169
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    2.9
-Release:    3%{?dist}
+Version:    3.0
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -19,7 +19,6 @@ Patch2:     x265-detect_cpu_armhfp.patch
 Patch3:     x265-arm-cflags.patch
 Patch4:     x265-pkgconfig_path_fix.patch
 Patch5:     x265-2.8-asm-primitives.patch
-Patch6:     https://sources.debian.org/data/main/x/x265/2.9-3/debian/patches/0003-detect512-is-needed-on-all-architectures.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake3
@@ -141,6 +140,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Feb 28 2019 Leigh Scott <leigh123linux@googlemail.com> - 3.0-1
+- Update to 3.0
+
 * Sun Dec 30 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.9-3
 - Rebuild against newer nasm on el7 (rfbz #5128)
 
