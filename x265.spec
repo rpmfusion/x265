@@ -1,16 +1,17 @@
-%global     _so_version 169
+%global     _so_version 176
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    3.0
-Release:    2%{?dist}
+Version:    3.1
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
 License:    GPLv2+ and BSD
 
-Source0:    https://bitbucket.org/multicoreware/%{name}/downloads/%{name}_%{version}.tar.gz
+# Official upstream is http://hg.videolan.org/ - using github mirror
+Source0:    https://github.com/videolan/x265/archive/%{version}/%{name}-%{version}.tar.gz
 
 # fix building as PIC
 Patch0:     x265-pic.patch
@@ -59,7 +60,7 @@ performance on a wide variety of hardware platforms.
 This package contains the shared library development files.
 
 %prep
-%autosetup -p1 -n %{name}_%{version}
+%autosetup -p1
 
 %build
 # High depth libraries (from source/h265.h):
@@ -140,6 +141,10 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Fri Jun 28 2019 Nicolas Chauvet <kwizart@gmail.com> - 3.1-1
+- Update to 3.1
+- Switch to github mirror
+
 * Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
