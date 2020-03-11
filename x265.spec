@@ -3,7 +3,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.3
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -139,6 +139,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Wed Mar 11 2020 Nicolas Chauvet <kwizart@gmail.com> - 3.3-2
+- Rebuilt for i686
+
 * Sun Feb 23 2020 Leigh Scott <leigh123linux@googlemail.com> - 3.3-1
 - Update to 3.3
 
