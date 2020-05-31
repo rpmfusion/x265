@@ -1,9 +1,9 @@
-%global     _so_version 188
+%global     _so_version 192
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    3.3
-Release:    2%{?dist}
+Version:    3.4
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -17,7 +17,6 @@ Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-detect_cpu_armhfp.patch
 Patch3:     x265-arm-cflags.patch
 Patch4:     x265-pkgconfig_path_fix.patch
-Patch5:     x265-2.8-asm-primitives.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake3
@@ -139,6 +138,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sun May 31 2020 Leigh Scott <leigh123linux@gmail.com> - 3.4-1
+- Update to 3.4
+
 * Wed Mar 11 2020 Nicolas Chauvet <kwizart@gmail.com> - 3.3-2
 - Rebuilt for i686
 

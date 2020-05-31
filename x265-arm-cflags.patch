@@ -1,26 +1,35 @@
-diff -up x265_2.7/source/CMakeLists.txt.cflags x265_2.7/source/CMakeLists.txt
---- x265_2.7/source/CMakeLists.txt.cflags	2018-02-27 20:19:33.328932385 +0100
-+++ x265_2.7/source/CMakeLists.txt	2018-02-27 20:29:14.808956583 +0100
-@@ -233,18 +233,6 @@ if(GCC)
+--- x265_3.4/source/CMakeLists.txt.cflags
++++ x265_3.4/source/CMakeLists.txt
+@@ -238,28 +238,6 @@
              endif()
          endif()
      endif()
 -    if(ARM AND CROSS_COMPILE_ARM)
--        set(ARM_ARGS -march=armv6 -mfloat-abi=soft -mfpu=vfp -marm -fPIC)
+-        if(ARM64)
+-            set(ARM_ARGS -fPIC)
+-        else()
+-            set(ARM_ARGS -march=armv6 -mfloat-abi=soft -mfpu=vfp -marm -fPIC)
+-        endif()
+-        message(STATUS "cross compile arm")
 -    elseif(ARM)
--        find_package(Neon)
--        if(CPU_HAS_NEON)
--            set(ARM_ARGS -mcpu=native -mfloat-abi=hard -mfpu=neon -marm -fPIC)
+-        if(ARM64)
+-            set(ARM_ARGS -fPIC)
 -            add_definitions(-DHAVE_NEON)
 -        else()
--            set(ARM_ARGS -mcpu=native -mfloat-abi=hard -mfpu=vfp -marm)
+-            find_package(Neon)
+-            if(CPU_HAS_NEON)
+-                set(ARM_ARGS -mcpu=native -mfloat-abi=hard -mfpu=neon -marm -fPIC)
+-                add_definitions(-DHAVE_NEON)
+-            else()
+-                set(ARM_ARGS -mcpu=native -mfloat-abi=hard -mfpu=vfp -marm)
+-            endif()
 -        endif()
 -    endif()
 -    add_definitions(${ARM_ARGS})
      if(FPROFILE_GENERATE)
          if(INTEL_CXX)
              add_definitions(-prof-gen -prof-dir="${CMAKE_CURRENT_BINARY_DIR}")
-@@ -517,7 +505,7 @@ if((MSVC_IDE OR XCODE OR GCC) AND ENABLE
+@@ -546,7 +524,7 @@
              add_custom_command(
                  OUTPUT ${ASM}.${SUFFIX}
                  COMMAND ${CMAKE_CXX_COMPILER}
@@ -29,10 +38,10 @@ diff -up x265_2.7/source/CMakeLists.txt.cflags x265_2.7/source/CMakeLists.txt
                  DEPENDS ${ASM_SRC})
          endforeach()
      elseif(X86)
-diff -up x265_2.7/source/dynamicHDR10/CMakeLists.txt.cflags x265_2.7/source/dynamicHDR10/CMakeLists.txt
---- x265_2.7/source/dynamicHDR10/CMakeLists.txt.cflags	2018-02-21 09:55:56.000000000 +0100
-+++ x265_2.7/source/dynamicHDR10/CMakeLists.txt	2018-02-27 20:29:45.377062994 +0100
-@@ -42,18 +42,6 @@ if(GCC)
+
+--- x265_3.4/source/dynamicHDR10/CMakeLists.txt.cflags
++++ x265_3.4/source/dynamicHDR10/CMakeLists.txt
+@@ -42,18 +42,6 @@
              endif()
          endif()
      endif()
@@ -51,10 +60,4 @@ diff -up x265_2.7/source/dynamicHDR10/CMakeLists.txt.cflags x265_2.7/source/dyna
      if(FPROFILE_GENERATE)
          if(INTEL_CXX)
              add_definitions(-prof-gen -prof-dir="${CMAKE_CURRENT_BINARY_DIR}")
-@@ -150,4 +138,4 @@ set(BIN_INSTALL_DIR bin CACHE STRING "In
- option(ENABLE_SHARED "Build shared library" OFF)
- 
- install(FILES hdr10plus.h DESTINATION include)
--endif()
-\ Pas de fin de ligne à la fin du fichier
-+endif()
+
