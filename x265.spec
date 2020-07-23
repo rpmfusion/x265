@@ -1,9 +1,12 @@
+# Use old cmake macro
+%global __cmake_in_source_build 1
+
 %global     _so_version 192
 
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.4
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -138,6 +141,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Jul 23 2020 Leigh Scott <leigh123linux@gmail.com> - 3.4-2
+- Use old cmake macro
+
 * Sun May 31 2020 Leigh Scott <leigh123linux@gmail.com> - 3.4-1
 - Update to 3.4
 
