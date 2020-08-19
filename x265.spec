@@ -6,7 +6,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.4
-Release:    2%{?dist}
+Release:    3%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -141,6 +141,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Wed Aug 19 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Thu Jul 23 2020 Leigh Scott <leigh123linux@gmail.com> - 3.4-2
 - Use old cmake macro
 
