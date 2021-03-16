@@ -6,7 +6,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.4
-Release:    4%{?dist}
+Release:    5%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -75,6 +75,7 @@ build() {
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
+    -DENABLE_SHARED=ON \
     -DENABLE_TESTS:BOOL=ON \
     $* \
     ../source
@@ -95,7 +96,7 @@ popd
 
 # 8 bit base library + encoder
 mkdir 8bit; pushd 8bit
-    build
+    build -DENABLE_HDR10_PLUS=YES
 popd
 
 %install
@@ -127,6 +128,7 @@ done
 
 %files libs
 %license COPYING
+%{_libdir}/libhdr10plus.so
 %{_libdir}/libx265.so.%{_so_version}
 %ifarch x86_64 aarch64 ppc64 ppc64le
 %{_libdir}/libx265_main10.so.%{_so_version}
@@ -135,12 +137,16 @@ done
 
 %files devel
 %doc doc/*
+%{_includedir}/hdr10plus.h
 %{_includedir}/x265.h
 %{_includedir}/x265_config.h
 %{_libdir}/libx265.so
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Tue Mar 16 2021 Leigh Scott <leigh123linux@gmail.com> - 3.4-5
+- Enable HDR10+.
+
 * Thu Feb 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
