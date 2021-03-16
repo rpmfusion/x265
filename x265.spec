@@ -12,7 +12,7 @@ URL:        http://x265.org/
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
 License:    GPLv2+ and BSD
-Source0:    https://bitbucket.org/multicoreware/%{name}/downloads/%{name}_%{version}.tar.gz
+Source0:    https://bitbucket.org/multicoreware/x265_git/get/%{version}.tar.gz#%{name}_%{version}.tar.gz
 
 # fix building as PIC
 Patch0:     x265-pic.patch
