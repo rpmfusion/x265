@@ -1,18 +1,18 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 192
+%global     _so_version 199
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    3.4
-Release:    5%{?dist}
+Version:    3.5
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
 License:    GPLv2+ and BSD
-Source0:    https://bitbucket.org/multicoreware/x265_git/get/%{version}.tar.gz#/%{name}_%{version}.tar.gz
+Source0:    https://bitbucket.org/multicoreware/%{name}_git/downloads/%{name}_%{version}.tar.gz
 
 # fix building as PIC
 Patch0:     x265-pic.patch
@@ -22,6 +22,7 @@ Patch3:     x265-arm-cflags.patch
 Patch4:     x265-pkgconfig_path_fix.patch
 
 BuildRequires:  gcc-c++
+BuildRequires:  git
 BuildRequires:  cmake3
 %{?el7:BuildRequires: epel-rpm-macros}
 BuildRequires:  nasm
@@ -77,20 +78,28 @@ build() {
     -DENABLE_PIC:BOOL=ON \
     -DENABLE_SHARED=ON \
     -DENABLE_TESTS:BOOL=ON \
+    -DCMAKE_ASM_NASM_FLAGS=-w-macro-params-legacy \
     $* \
     ../source
-%ninja_build
+%cmake3_build
 }
 
 # High depth 10/12 bit libraries are supported only on 64 bit. They require
 # disabled AltiVec instructions for building on ppc64/ppc64le.
 %ifarch x86_64 aarch64 ppc64 ppc64le
 mkdir 10bit; pushd 10bit
-    build -DENABLE_CLI=OFF -DENABLE_ALTIVEC=OFF -DHIGH_BIT_DEPTH=ON
+    build \
+    -DENABLE_CLI=OFF \
+    -DENABLE_ALTIVEC=OFF \
+    -DHIGH_BIT_DEPTH=ON
 popd
 
 mkdir 12bit; pushd 12bit
-    build -DENABLE_CLI=OFF -DENABLE_ALTIVEC=OFF -DHIGH_BIT_DEPTH=ON -DMAIN12=ON
+    build \
+    -DENABLE_CLI=OFF \
+    -DENABLE_ALTIVEC=OFF \
+    -DHIGH_BIT_DEPTH=ON \
+    -DMAIN12=ON
 popd
 %endif
 
@@ -103,7 +112,7 @@ popd
 for i in 8 10 12; do
     if [ -d ${i}bit ]; then
         pushd ${i}bit
-            %ninja_install
+            %cmake3_install
             # Remove unversioned library, should not be linked to
             rm -f %{buildroot}%{_libdir}/libx265_main${i}.so
         popd
@@ -144,6 +153,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Tue Apr 13 2021 Leigh Scott <leigh123linux@gmail.com> - 3.5-1
+- Update to 3.5
+
 * Tue Mar 16 2021 Leigh Scott <leigh123linux@gmail.com> - 3.4-5
 - Enable HDR10+.
 
