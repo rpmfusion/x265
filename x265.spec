@@ -6,7 +6,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.5
-Release:    4%{?dist}
+Release:    5%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -154,6 +154,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu Dec 29 2022 Nicolas Chauvet <kwizart@gmail.com> - 3.5-5
+- Enable ENABLE_HDR10_PLUS everywhere rfbz#6454
+
 * Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1
