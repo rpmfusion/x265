@@ -78,6 +78,7 @@ build() {
     -DENABLE_PIC:BOOL=ON \
     -DENABLE_SHARED=ON \
     -DENABLE_TESTS:BOOL=ON \
+    -DENABLE_HDR10_PLUS=YES \
     -DCMAKE_ASM_NASM_FLAGS=-w-macro-params-legacy \
     $* \
     ../source
@@ -105,7 +106,7 @@ popd
 
 # 8 bit base library + encoder
 mkdir 8bit; pushd 8bit
-    build -DENABLE_HDR10_PLUS=YES
+    build
 popd
 
 %install
