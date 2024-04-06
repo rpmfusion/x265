@@ -1,12 +1,12 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 199
+%global     _so_version 209
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    3.5
-Release:    7%{?dist}
+Version:    3.6
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -17,13 +17,11 @@ Source0:    https://bitbucket.org/multicoreware/%{name}_git/downloads/%{name}_%{
 # fix building as PIC
 Patch0:     x265-pic.patch
 Patch1:     x265-high-bit-depth-soname.patch
-Patch2:     x265-detect_cpu_armhfp.patch
-Patch3:     x265-arm-cflags.patch
-Patch4:     x265-pkgconfig_path_fix.patch
+Patch2:     x265-pkgconfig_path_fix.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
-BuildRequires:  cmake3
+BuildRequires:  cmake
 %{?el7:BuildRequires: epel-rpm-macros}
 BuildRequires:  nasm
 BuildRequires:  ninja-build
@@ -72,7 +70,7 @@ This package contains the shared library development files.
 #     10bit: libx265_main10.so
 
 build() {
-%cmake3 -Wno-dev -G "Ninja" \
+%cmake -Wno-dev -G "Ninja" \
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
@@ -82,7 +80,7 @@ build() {
     -DCMAKE_ASM_NASM_FLAGS=-w-macro-params-legacy \
     $* \
     ../source
-%cmake3_build
+%cmake_build
 }
 
 # High depth 10/12 bit libraries are supported only on 64 bit. They require
@@ -113,7 +111,7 @@ popd
 for i in 8 10 12; do
     if [ -d ${i}bit ]; then
         pushd ${i}bit
-            %cmake3_install
+            %cmake_install
             # Remove unversioned library, should not be linked to
             rm -f %{buildroot}%{_libdir}/libx265_main${i}.so
         popd
@@ -154,6 +152,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sat Apr 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3.6-1
+- Update to 3.6
+
 * Sun Feb 04 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
