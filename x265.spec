@@ -6,7 +6,7 @@
 Summary:    H.265/HEVC encoder
 Name:       x265
 Version:    3.6
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -18,6 +18,8 @@ Source0:    https://bitbucket.org/multicoreware/%{name}_git/downloads/%{name}_%{
 Patch0:     x265-pic.patch
 Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-pkgconfig_path_fix.patch
+# https://bitbucket.org/multicoreware/x265_git/pull-requests/10
+Patch3:     https://bitbucket.org/harlancc/x265_git/commits/8454caf458c5f5d20cce711ff8ea8de55ec1ae50/raw#/x265-sei-length-crash-fix.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
@@ -152,6 +154,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Thu May 16 2024 Dominik Mierzejewski <rpm@greysector.net> - 3.6-2
+- Backport a fix for crashes when encoding with variable length SEI
+
 * Sat Apr 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3.6-1
 - Update to 3.6
 
