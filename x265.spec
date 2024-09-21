@@ -1,12 +1,12 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 209
+%global     _so_version 212
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    3.6
-Release:    3%{?dist}
+Version:    4.0
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -154,6 +154,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sun Sep 15 2024 Leigh Scott <leigh123linux@gmail.com> - 4.0-1
+- Update to 4.0
+
 * Fri Aug 02 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.6-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
