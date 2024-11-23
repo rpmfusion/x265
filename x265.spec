@@ -1,11 +1,11 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 212
+%global     _so_version 215
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    4.0
+Version:    4.1
 Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
@@ -154,6 +154,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Sat Nov 23 2024 Leigh Scott <leigh123linux@gmail.com> - 4.1-1
+- Update to 4.1
+
 * Sun Sep 15 2024 Leigh Scott <leigh123linux@gmail.com> - 4.0-1
 - Update to 4.0
 
