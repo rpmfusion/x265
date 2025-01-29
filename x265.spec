@@ -20,6 +20,7 @@ Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-pkgconfig_path_fix.patch
 # https://bitbucket.org/multicoreware/x265_git/pull-requests/10
 Patch3:     https://bitbucket.org/harlancc/x265_git/commits/8454caf458c5f5d20cce711ff8ea8de55ec1ae50/raw#/x265-sei-length-crash-fix.patch
+Patch4:     add_missing_include.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
