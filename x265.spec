@@ -65,6 +65,9 @@ This package contains the shared library development files.
 %autosetup -p1 -n %{name}_%{version}
 
 %build
+%ifarch %{ix86}
+export LDFLAGS+=' -Wl,-z,notext'
+%endif
 # High depth libraries (from source/h265.h):
 #   If the requested bitDepth is not supported by the linked libx265,
 #   it will attempt to dynamically bind x265_api_get() from a shared
