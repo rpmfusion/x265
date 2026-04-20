@@ -63,9 +63,6 @@ This package contains the shared library development files.
 %autosetup -p1 -n %{name}_%{version}
 
 %build
-%ifarch %{ix86}
-export LDFLAGS+=' -Wl,-z,notext'
-%endif
 # High depth libraries (from source/h265.h):
 #   If the requested bitDepth is not supported by the linked libx265,
 #   it will attempt to dynamically bind x265_api_get() from a shared
@@ -79,6 +76,9 @@ build() {
     -DCMAKE_SKIP_RPATH:BOOL=YES \
     -DENABLE_PIC:BOOL=ON \
     -DENABLE_SHARED=ON \
+%ifarch %{ix86}
+    -DENABLE_ASSEMBLY=OFF \
+%endif
     -DENABLE_TESTS:BOOL=ON \
     -DENABLE_HDR10_PLUS=YES \
     -DCMAKE_ASM_NASM_FLAGS=-w-macro-params-legacy \
@@ -158,6 +158,7 @@ done
 %changelog
 * Mon Apr 20 2026 Leigh Scott <leigh123linux@gmail.com> - 4.2-1
 - Update to 4.2
+- Disable nasm for i686
 
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 4.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
