@@ -1,12 +1,12 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 215
+%global     _so_version 216
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    4.1
-Release:    4%{?dist}
+Version:    4.2
+Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
@@ -18,9 +18,7 @@ Source0:    https://bitbucket.org/multicoreware/%{name}_git/downloads/%{name}_%{
 Patch0:     x265-pic.patch
 Patch1:     x265-high-bit-depth-soname.patch
 Patch2:     x265-pkgconfig_path_fix.patch
-# https://bitbucket.org/multicoreware/x265_git/pull-requests/10
-Patch3:     https://bitbucket.org/harlancc/x265_git/commits/8454caf458c5f5d20cce711ff8ea8de55ec1ae50/raw#/x265-sei-length-crash-fix.patch
-Patch4:     add_missing_include.patch
+Patch3:     add_missing_include.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
@@ -158,6 +156,9 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Mon Apr 20 2026 Leigh Scott <leigh123linux@gmail.com> - 4.2-1
+- Update to 4.2
+
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 4.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
