@@ -1,18 +1,18 @@
 # Use old cmake macro
 %global __cmake_in_source_build 1
 
-%global     _so_version 216
+%global     _so_version 217
 
 Summary:    H.265/HEVC encoder
 Name:       x265
-Version:    4.2
+Version:    4.3
 Release:    1%{?dist}
 URL:        http://x265.org/
 # source/Lib/TLibCommon - BSD
 # source/Lib/TLibEncoder - BSD
 # everything else - GPLv2+
 License:    GPLv2+ and BSD
-Source0:    https://bitbucket.org/multicoreware/%{name}_git/downloads/%{name}_%{version}.tar.gz
+Source0:    https://github.com/Multicorewareinc/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 
 # fix building as PIC
 Patch0:     x265-pic.patch
@@ -60,7 +60,7 @@ performance on a wide variety of hardware platforms.
 This package contains the shared library development files.
 
 %prep
-%autosetup -p1 -n %{name}_%{version}
+%autosetup -p1
 
 %build
 # High depth libraries (from source/h265.h):
@@ -133,8 +133,6 @@ for i in 8 10 12; do
     fi
 done
 
-%ldconfig_scriptlets libs
-
 %files
 %{_bindir}/x265
 
@@ -156,6 +154,10 @@ done
 %{_libdir}/pkgconfig/x265.pc
 
 %changelog
+* Fri Jul 31 2026 Leigh Scott <leigh123linux@gmail.com> - 4.3-1
+- Update to 4.3
+- Switch source to github URL
+
 * Mon Apr 20 2026 Leigh Scott <leigh123linux@gmail.com> - 4.2-1
 - Update to 4.2
 - Disable nasm for i686
